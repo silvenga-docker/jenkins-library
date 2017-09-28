@@ -6,6 +6,7 @@ def call(body) {
 
     def versionString = config.version
     def imageName = config.name
+    def workingPath = config.path ?: "."
 
     def registryUrl = config.registryUrl ?: "registry.silvenga.com"
     def registryCredential = config.registryCredential ?: "registry"
@@ -24,15 +25,17 @@ def call(body) {
         
         def image
 
-        stage("Build") {
-            echo "Building ${imageName} with version ${version}."
-            image = docker.build("${registryUrl}/${imageName}:${version}")
-        }
+        dir(workingPath) {
+            stage("Build") {
+                echo "Building ${imageName} with version ${version}."
+                image = docker.build("${registryUrl}/${imageName}:${version}")
+            }
 
-        stage("Publish") {
-            docker.withRegistry("https://${registryUrl}", registryCredential) {
-                image.push()
-                image.push("latest")
+            stage("Publish") {
+                docker.withRegistry("https://${registryUrl}", registryCredential) {
+                    image.push()
+                    image.push("latest")
+                }
             }
         }
     }
