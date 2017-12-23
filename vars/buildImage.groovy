@@ -8,8 +8,8 @@ def call(body) {
     def imageName = config.name
     def workingPath = config.path ?: "."
 
-    def registryUrl = config.registryUrl ?: "registry.silvenga.com"
-    def registryCredential = config.registryCredential ?: "registry"
+    def registryUrl = config.registryUrl ?: "silvenga.azurecr.io"
+    def registryCredential = config.registryCredential ?: "jenkins-silvenga.azurecr.io"
 
     def version = VersionNumber(versionNumberString: versionString)
 
