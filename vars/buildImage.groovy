@@ -27,14 +27,18 @@ def call(body) {
 
         dir(workingPath) {
             stage("Build") {
-                echo "Building ${imageName} with version ${version}."
-                image = docker.build("${registryUrl}/${imageName}:${version}")
+                ansiColor('xterm') {
+                    echo "Building ${imageName} with version ${version}."
+                    image = docker.build("${registryUrl}/${imageName}:${version}")
+                }
             }
 
             stage("Publish") {
-                docker.withRegistry("https://${registryUrl}", registryCredential) {
-                    image.push()
-                    image.push("latest")
+                ansiColor('xterm') {
+                    docker.withRegistry("https://${registryUrl}", registryCredential) {
+                        image.push()
+                        image.push("latest")
+                    }
                 }
             }
         }
