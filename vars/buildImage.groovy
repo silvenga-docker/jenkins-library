@@ -29,7 +29,7 @@ def call(body) {
             stage("Build") {
                 ansiColor('xterm') {
                     echo "Building ${imageName} with version ${version}."
-                    image = docker.build("${registryUrl}/${imageName}:${version}")
+                    image = docker.build("${registryUrl}/${imageName}:${version}", "--pull .")
                 }
             }
 
